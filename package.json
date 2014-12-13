@@ -1,0 +1,32 @@
+{
+  "name": "tilestrata-dependency",
+  "version": "0.0.0",
+  "description": "A TileStrata plugin for loading another layer tile as a source",
+  "author": "Brian Reavis <brian@thirdroute.com>",
+  "license": "Apache License, v2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R tap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naturalatlas/tilestrata-dependency.git"
+  },
+  "keywords": [
+    "tilestrata",
+    "tilestrata-plugin",
+    "tilestrata-provider"
+  ],
+  "bugs": {
+    "url": "https://github.com/naturalatlas/tilestrata-dependency/issues"
+  },
+  "homepage": "https://github.com/naturalatlas/tilestrata-dependency",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1"
+  },
+  "peerDependencies": {
+  	"tilestrata": "*"
+  }
+}
