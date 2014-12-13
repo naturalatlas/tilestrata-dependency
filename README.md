@@ -3,7 +3,7 @@
 [![Build Status](http://img.shields.io/travis/naturalatlas/tilestrata-dependency/master.svg?style=flat)](https://travis-ci.org/naturalatlas/tilestrata-dependency)
 [![Coverage Status](http://img.shields.io/coveralls/naturalatlas/tilestrata-dependency/master.svg?style=flat)](https://coveralls.io/r/naturalatlas/tilestrata-dependency)
 
-A [TileStrata](https://github.com/naturalatlas/tilestrata) plugin for loading another layer tile as a source, which is particularly useful in cases when you want to be able to serve a rendered result in multiple formats.
+A [TileStrata](https://github.com/naturalatlas/tilestrata) plugin for loading another layer tile as a source, which is particularly useful for cases when you want to be able to serve a rendered result in multiple formats.
 
 ```sh
 $ npm install tilestrata-dependency --save
@@ -11,7 +11,7 @@ $ npm install tilestrata-dependency --save
 
 ### Sample Usage
 
-```
+```js
 var dependency = require('tilestrata-dependency');
 
 server.registerLayer(function(layer) {
@@ -22,7 +22,10 @@ server.registerLayer(function(layer) {
     });
     layer.registerRoute('tile.jpg', function(handler) {
         layer.registerCache(...);
-        layer.registerProvider('mylayer', 'tile.png');
+        
+        // load other layer tile as source:
+        layer.registerProvider(dependency('mylayer', 'tile.png'));
+
         layer.registerTransform(...);
     });
 });
