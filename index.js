@@ -2,6 +2,7 @@ module.exports = function(layer, filename) {
 	return {
 		serve: function(server, req, callback) {
 			var mock = req.clone();
+			mock.method = 'GET';
 			mock.layer = layer;
 			mock.filename = filename;
 			mock.headers = {};

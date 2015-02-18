@@ -13,6 +13,7 @@ describe('Provider Implementation "dependency"', function() {
 				layer.registerRoute('tile.txt', function(handler) {
 					handler.registerProvider({
 						serve: function(server, req, callback) {
+							assert.equal(req.method, 'GET');
 							assert.deepEqual(req.headers, {'x-tilestrata-skipcache':'1'});
 							callback(null, new Buffer('Test dependency', 'utf8'), {'X-Test': 'header'});
 						}
@@ -21,7 +22,7 @@ describe('Provider Implementation "dependency"', function() {
 			});
 
 			var provider = dependency('basemap', 'tile.txt');
-			var req = TileRequest.parse('/basemap/3/2/1/tile.txt', {'x-tilestrata-skipcache':'1','x-random':'1'}, 'GET');
+			var req = TileRequest.parse('/basemap/3/2/1/tile.txt', {'x-tilestrata-skipcache':'1','x-random':'1'}, 'HEAD');
 			provider.serve(server, req, function(err, buffer, headers) {
 				assert.isFalse(!!err);
 				assert.instanceOf(buffer, Buffer);
