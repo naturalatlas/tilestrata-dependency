@@ -14,21 +14,9 @@ $ npm install tilestrata-dependency --save
 ```js
 var dependency = require('tilestrata-dependency');
 
-server.registerLayer(function(layer) {
-    layer.setName('mylayer');
-    layer.registerRoute('tile.png', function(handler) {
-        layer.registerCache(...);
-        layer.registerProvider(...);
-    });
-    layer.registerRoute('tile.jpg', function(handler) {
-        layer.registerCache(...);
-        
-        // load other layer tile as source:
-        layer.registerProvider(dependency('mylayer', 'tile.png'));
-
-        layer.registerTransform(...);
-    });
-});
+server.layer('mylayer').route('tile.png');
+server.layer('mylayer').route('tile.jpg')
+    .use(dependency('mylayer', 'tile.png'));
 ```
 
 ## Contributing

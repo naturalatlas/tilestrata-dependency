@@ -12,6 +12,10 @@ module.exports = function(layer, filename) {
 
 			server.serve(mock, false, function(status, buffer, headers) {
 				if (status === 200) {
+					// don't propagate the cache-hit header (because technically
+					// this provider is serving a "new" tile)
+					if (headers) delete headers['X-TileStrata-CacheHit'];
+
 					callback(null, buffer, headers);
 				} else {
 					var message = 'Tile unavailable (status ' + status + ')';

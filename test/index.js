@@ -8,17 +8,12 @@ describe('Provider Implementation "dependency"', function() {
 	describe('serve()', function() {
 		it('should fetch and return dependency', function(done) {
 			var server = new TileServer();
-			server.registerLayer(function(layer) {
-				layer.setName('basemap');
-				layer.registerRoute('tile.txt', function(handler) {
-					handler.registerProvider({
-						serve: function(server, req, callback) {
-							assert.equal(req.method, 'GET');
-							assert.deepEqual(req.headers, {'x-tilestrata-skipcache':'1'});
-							callback(null, new Buffer('Test dependency', 'utf8'), {'X-Test': 'header'});
-						}
-					});
-				});
+			server.layer('basemap').route('tile.txt').use({
+				serve: function(server, req, callback) {
+					assert.equal(req.method, 'GET');
+					assert.deepEqual(req.headers, {'x-tilestrata-skipcache':'1'});
+					callback(null, new Buffer('Test dependency', 'utf8'), {'X-Test': 'header'});
+				}
 			});
 
 			var provider = dependency('basemap', 'tile.txt');
