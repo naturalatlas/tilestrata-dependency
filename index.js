@@ -20,7 +20,9 @@ module.exports = function(layer, filename) {
 				} else {
 					var message = 'Tile unavailable (status ' + status + ')';
 					if (buffer.length < 1024) message = buffer.toString('utf8');
-					callback(new Error(message));
+					var err = new Error(message);
+					err.statusCode = status;
+					callback(err);
 				}
 			});
 		}

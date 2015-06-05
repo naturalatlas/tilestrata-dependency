@@ -6,6 +6,16 @@ var assert = require('chai').assert;
 
 describe('Provider Implementation "dependency"', function() {
 	describe('serve()', function() {
+		it('should attach statusCode property to errors', function(done) {
+			var server = new TileServer();
+			var provider = dependency('basemap', 'tile.txt');
+			var req = TileRequest.parse('/basemap/3/2/1/tile.txt', {'x-tilestrata-skipcache':'1','x-random':'1'}, 'HEAD');
+			provider.serve(server, req, function(err, buffer, headers) {
+				assert.instanceOf(err, Error);
+				assert.equal(err.statusCode, 404);
+				done();
+			});
+		}),
 		it('should fetch and return dependency', function(done) {
 			var server = new TileServer();
 			server.layer('basemap').route('tile.txt').use({
