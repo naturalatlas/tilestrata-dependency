@@ -7,7 +7,7 @@ module.exports = function(layer, filename) {
 			mock.filename = filename;
 			mock.headers = {};
 			if (req.headers['x-tilestrata-skipcache']) {
-				mock.headers['x-tilestrata-skipcache'] = '1';
+				mock.headers['x-tilestrata-skipcache'] = req.headers['x-tilestrata-skipcache'];
 			}
 
 			server.serve(mock, false, function(status, buffer, headers) {
