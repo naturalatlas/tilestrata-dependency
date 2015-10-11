@@ -5,6 +5,9 @@ var dependency = require('../index.js');
 var assert = require('chai').assert;
 
 describe('Provider Implementation "dependency"', function() {
+	it('should set "name"', function() {
+		assert.equal(dependency('basemap', 'tile.txt').name, 'basemap/tile.txt');
+	});
 	describe('serve()', function() {
 		it('should attach statusCode property to errors', function(done) {
 			var server = new TileServer();
