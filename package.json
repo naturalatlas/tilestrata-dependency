@@ -1,6 +1,6 @@
 {
   "name": "tilestrata-dependency",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A TileStrata plugin for loading another layer tile as a source",
   "author": "Brian Reavis <brian@thirdroute.com>",
   "license": "Apache-2.0",
