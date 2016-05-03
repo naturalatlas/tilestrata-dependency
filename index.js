@@ -1,11 +1,27 @@
-module.exports = function(layer, filename) {
+module.exports = function() {
+	var source, getSource;
+	if (typeof arguments[0] === 'function') {
+		getSource = arguments[0];
+	} else {
+		source = [arguments[0], arguments[1]];
+		getSource = function(req) { return source; };
+	}
+
 	return {
-		name: layer + '/' + filename,
+		name: source ? source.join('/') : 'dependency',
 		serve: function(server, req, callback) {
 			var mock = req.clone();
+			var source = getSource(req);
+
+			if (!source) {
+				var notFound = new Error('No source available for this request');
+				notFound.statusCode = 404;
+				return callback(notFound);
+			}
+
 			mock.method = 'GET';
-			mock.layer = layer;
-			mock.filename = filename;
+			mock.layer = source[0];
+			mock.filename = source[1];
 			mock.headers = {};
 			if (req.headers['x-tilestrata-skipcache']) {
 				mock.headers['x-tilestrata-skipcache'] = req.headers['x-tilestrata-skipcache'];
