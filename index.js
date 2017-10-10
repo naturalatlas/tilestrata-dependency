@@ -21,7 +21,13 @@ module.exports = function() {
 
 			mock.method = 'GET';
 			mock.layer = source[0];
-			mock.filename = source[1];
+			if (source[1].charAt(0) === '*') {
+				mock.filename = 't' + source[1].substring(1);
+				mock.hasFilename = false;
+			} else {
+				mock.filename = source[1];
+				mock.hasFilename = true;
+			}
 			mock.headers = {};
 			if (req.headers['x-tilestrata-skipcache']) {
 				mock.headers['x-tilestrata-skipcache'] = req.headers['x-tilestrata-skipcache'];

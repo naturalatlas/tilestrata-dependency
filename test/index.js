@@ -32,10 +32,28 @@ describe('Provider Implementation "dependency"', function() {
 			var provider = dependency('basemap', 'tile.txt');
 			var req = TileRequest.parse('/layer/3/2/1/tile.txt', {'x-tilestrata-skipcache':'basemap/tile.txt','x-random':'1'}, 'HEAD');
 			provider.serve(server, req, function(err, buffer, headers) {
-				assert.isFalse(!!err);
+				if (err) throw err;
 				assert.instanceOf(buffer, Buffer);
 				assert.equal(buffer.toString('utf8'), 'Test dependency');
 				assert.equal(headers['X-Test'], 'header');
+				done();
+			});
+		});
+		it('should fetch and return dependency (no filename)', function(done) {
+			var server = new TileServer();
+			server.layer('basemap').route('*@2x.png').use({
+				serve: function(server, req, callback) {
+					assert.equal(req.filename, 't@2x.png', 'req.filename');
+					assert.isFalse(req.hasFilename, 'req.hasFilename');
+					callback(null, new Buffer('Test dependency', 'utf8'), {});
+				}
+			});
+
+			var provider = dependency('basemap', '*@2x.png');
+			var req = TileRequest.parse('/layer/3/2/1.png', {}, 'GET');
+			provider.serve(server, req, function(err, buffer, headers) {
+				if (err) throw err;
+				assert.equal(buffer.toString('utf8'), 'Test dependency');
 				done();
 			});
 		});
